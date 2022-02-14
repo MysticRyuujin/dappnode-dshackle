@@ -1,0 +1,17 @@
+version: "3.4"
+services:
+  dshackle:
+    image: "dshackle.dshackle.public.dappnode.eth:0.1.0"
+    build:
+      context: build
+      args:
+        UPSTREAM_VERSION: 0.11.1
+    volumes:
+      - "dshackle:/etc/dshackle"
+    environment:
+      - INFURA_KEY=
+      - RIVET_KEY=
+      - ALCHEMY_KEY=
+    restart: unless-stopped
+volumes:
+  dshackle: {}

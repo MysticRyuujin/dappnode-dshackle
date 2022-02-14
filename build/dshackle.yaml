@@ -1,0 +1,93 @@
+host: 0.0.0.0
+port: 2449
+
+tls:
+  enabled: false
+
+monitoring:
+  enabled: false
+
+health:
+  port: 8081
+  host: 0.0.0.0
+  path: /health
+  blockchains:
+    - chain: ethereum
+      min-available: 1
+
+cache:
+  redis:
+    enabled: false
+
+proxy:
+  host: 0.0.0.0
+  port: 8545
+  websocket: false
+  tls:
+    enabled: false
+  routes:
+    - id: eth
+      blockchain: ethereum
+
+accessLog:
+  enabled: false
+
+cluster:
+  defaults:
+    - chains:
+        - ethereum
+      options:
+        min-peers: 10
+  upstreams:
+    - id: fullnode
+      chain: ethereum
+      options:
+        disable-validation: false
+      connection:
+        ethereum:
+          rpc:
+            url: "http://fullnode.dappnode:8545"
+          ws:
+            url: "ws://fullnode.dappnode:8546"
+    
+    - id: cloudflare
+      chain: ethereum
+      role: fallback
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://cloudflare-eth.com"
+    
+    - id: infura
+      chain: ethereum
+      role: fallback
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://mainnet.infura.io/v3/${INFURA_KEY}"
+          ws:
+            url: "wss://mainnet.infura.io/ws/v3/${INFURA_KEY}"
+    
+    - id: rivet
+      chain: ethereum
+      role: fallback
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://${RIVET_KEY}.eth.rpc.rivet.cloud/"
+    
+    - id: alchemy
+      chain: ethereum
+      role: fallback
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}"
