@@ -16,6 +16,10 @@ By default this DAppNode package will try to connect to `http://fullnode.dappnod
 
 All of the nodes except `fullnode.dappnode` are configured with the `role: fallback` setting to ensure that your DAppNode is preferred over any of the other endpoints.
 
+Because dshackle supports multiple chains, it requires a route to know which chain you are querying. By default only Ethereum chain is configured and it's configured at `/eth`
+
+e.g `http://dshackle.public.dappnode:8545/eth`
+
 ## Configuration
 
 All of the configuration takes place in the `/etc/dshackle/dshackle.yaml` file, you can download, modify, and re-upload this file into the package as needed, then simply restart the container for the changes to take effect.

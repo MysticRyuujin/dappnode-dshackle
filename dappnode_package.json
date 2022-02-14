@@ -33,7 +33,7 @@
   },
   "links": {
     "homepage": "https://github.com/emeraldpay/dshackle",
-    "gateway": "http://dshackle.public.dappnode:8545"
+    "gateway": "http://dshackle.public.dappnode:8545/eth"
   },
   "license": "Apache-2.0"
 }
