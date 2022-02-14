@@ -2,7 +2,8 @@
   "0.1.0": {
     "hash": "/ipfs/QmSZqpuu3HwZdusbktaA3eWAJDuvjg7HMtJR7wRGTx3aDd",
     "uploadedTo": {
-      "http://localhost:5001": "Mon, 14 Feb 2022 22:29:38 GMT"
-    }
+      "http://localhost:5001": "Mon, 14 Feb 2022 22:36:22 GMT"
+    },
+    "link": "https://dappnode.github.io/sdk-publish/?r=dshackle.public.dappnode.eth&v=0.1.0&h=%2Fipfs%2FQmSZqpuu3HwZdusbktaA3eWAJDuvjg7HMtJR7wRGTx3aDd&d=0x8aE6422631292c31aeeB2efe154d6326f703F46b"
   }
 }
