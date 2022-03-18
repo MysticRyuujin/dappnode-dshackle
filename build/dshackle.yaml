@@ -50,6 +50,16 @@ cluster:
           ws:
             url: "ws://fullnode.dappnode:8546"
     
+    - id: ankr
+      chain: ethereum
+      role: fallback
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://rpc.ankr.com/eth"
+    
     - id: cloudflare
       chain: ethereum
       role: fallback
@@ -69,8 +79,6 @@ cluster:
         ethereum:
           rpc:
             url: "https://mainnet.infura.io/v3/${INFURA_KEY}"
-          ws:
-            url: "wss://mainnet.infura.io/ws/v3/${INFURA_KEY}"
     
     - id: rivet
       chain: ethereum

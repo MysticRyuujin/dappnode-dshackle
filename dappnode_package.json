@@ -1,10 +1,10 @@
 {
   "name": "dshackle.public.dappnode.eth",
-  "version": "0.1.0",
-  "upstreamVersion": "v0.11.1",
+  "version": "0.2.0",
+  "upstreamVersion": "v0.12.0",
   "upstreamRepo": "emeraldpay/dshackle",
-  "shortDescription": "Emerald Dshackle",
-  "description": "Emerald Dshackle is a Fault Tolerant Load Balancer for Blockchain API.",
+  "shortDescription": "Emerald Dshackle - Fault Tolerant RPC Load Balancer",
+  "description": "Emerald Dshackle is a Fault Tolerant Load Balancer for Blockchain APIs",
   "mainService": "dshackle",
   "type": "service",
   "architectures": ["linux/amd64"],
@@ -33,7 +33,8 @@
   },
   "links": {
     "homepage": "https://github.com/emeraldpay/dshackle",
-    "gateway": "http://dshackle.public.dappnode:8545/eth"
+    "gateway": "http://dshackle.public.dappnode:8545/eth",
+    "readme": "https://github.com/MysticRyuujin/dappnode-dshackle/blob/main/README.md"
   },
   "license": "Apache-2.0"
 }

@@ -2,7 +2,7 @@
 
 [![DAppNodeStore Available](https://img.shields.io/badge/DAppNodeStore-Available-brightgreen.svg)](http://my.dappnode/#/installer/dshackle.public.dappnode.eth)
 
-[![Emerald Dshackle github](https://img.shields.io/badge/GithubRepo-blue.svg)](https://github.com/emeraldpay/dshackle) (Official)
+[![Emerald Dshackle github](https://img.shields.io/badge/GithubRepo-blue.svg)](https://github.com/emeraldpay/dshackle) (Official Dshackle Repo)
 
 Emerald Dshackle is a Fault Tolerant Load Balancer for Blockchain API.
 
@@ -12,7 +12,7 @@ It tries to recover from connection errors, faulty nodes, invalid responses, etc
 
 ## Setup
 
-By default this DAppNode package will try to connect to `http://fullnode.dappnode:8545` as well as endpoints from Infura, Rivet, and Alchemy. These providers all have some form of free tier that you can create an API key for and enter into the setup wizard (or place under the environment settings after startup). It also includes the publicly available Cloudflare endpoint `https://cloudflare-eth.com`
+By default this DAppNode package will try to connect to `http://fullnode.dappnode:8545` as well as endpoints from Infura, Rivet, and Alchemy. These providers all have some form of free tier that you can create an API key for and enter into the setup wizard (or place under the environment settings after startup). It also includes the publicly available Cloudflare endpoint `https://cloudflare-eth.com` AND the free public endpoint by Ankr `https://rpc.ankr.com/eth`
 
 All of the nodes except `fullnode.dappnode` are configured with the `role: fallback` setting to ensure that your DAppNode is preferred over any of the other endpoints.
 
@@ -28,25 +28,81 @@ See official github repo documentation for how to configure `dshackle.yaml` - th
 
 You can modify the config to include new providers, or private endpoints, etc.
 
-## Notes
+## WebSockets
 
-There seems to be some kind of bug/issue with Alchemy and Rivet when using WebSocket connections so Alchemy and Rivet are not configured with a WebSocket connection by default. Cloudflare does not expose a WebSocket endpoint to my knowledge, so that's also not configured.
+Some notes about WebSocket usage and Dshacke:
 
-Only with this setup do I get a relatively clean log, without endless streams of errors. You can of course play with these settings yourself. Some of these bugs are already fixed in the dshackle master, so this might in the future.
+1. Some providers behave strangely when configured with WebSockets. Dshackle will throw odd errors, etc.
+2. Dshackle has issues with very large WebSocket responses (e.g. `debug_` methods) where it will just drop the reply.
+3. Dshackle will use WebSockets to subscribe to new headers/blocks. This consumes a decent number of "calls" to your "freemium" nodes.
 
-RPC+WS is preferred however, dshackle does have some issues with very large WebSocket responses (think large debug method responses) so your mileage may vary. Experiment. Play. Have fun!
+For the reasons above I only included a WebSocket config for the DAppNode's `fullnode` endpoint.
 
-**WARNING: Using WebSockets results in more calls being used on your free tier as it subscribes to new headers and queries blocks more often, even if it's a fallback endpoint, you'll have to watch your usage and adjust accordingly**
+If you don't care about the extra calls, and/or you're not doing any large `debug_` calls to your nodes, you can add WebSocket URLs for the endpoints that support it (e.g. Infura). However, your mileage may vary, I get weird errors with Alchemy for instance.
 
-## Chainstack
+## TLS/SSL
+
+Dshackle does support TLS/SSL encryption, you can upload certs into the `/etc/dshackle` folder if you want to use it, though it might be easier to just expose Dsahckle through the DAppNode's HTTPS tool.
+
+For more info on how to use/setup TLS for Dshackle see the official repo docs.
+
+## Flashbots!
+
+A cool trick you can do to submit transactions through [Flashbots](https://docs.flashbots.net/flashbots-protect/rpc/quick-start/)
+
+1. Add Flashbots RPC
+```
+    rpc:
+        url: "https://rpc.flashbots.net"
+```
+2. Disable `eth_sendRawTransaction` on all configured endpoints EXCEPT for the Flashbots RPC endpoint:
+
+```
+    methods:
+      disabled:
+        - name: eth_sendRawTransaction
+```
+
+Now Dshackle has no choice but to route all of your transactions through the only available upstream for that method, the Flashbots RPC endpoint.
+
+## Other Providers
+Below is a list of "other" providers I know of that you can also add to your config. I didn't include them because I don't have a ton of experience using them and I figured setting up three was already enough.
+
+### Chainstack
 
 Chainstack is another provider with a free tier. If you want to use Chainstack you need to send basic auth, here's an example:
 ```
-    url: "https://nd-123-456-789.p2pify.com"
-    basic-auth:
-        username: connor-macleod
-        password: there-can-be-only-one-highlander
+    rpc:
+        url: "https://${whatever}.p2pify.com"
+        basic-auth:
+            username: connor-macleod
+            password: there-can-be-only-one
 ```
+
+### Pocket Network
+
+Pocket network is another provider with a free tier that gives you the option to use a "Secret Key" which according to their docs is just an HTTP basic-auth password, without a username. You don't have to enable it, but it's recommended. I haven't actually tested this but theoretically this would work:
+```
+    rpc:
+        url: "https://eth-mainnet.gateway.pokt.network/v1/lb/${whatever}"
+        basic-auth:
+        username: ""
+        password: ${SecretKey}
+```
+
+### ZMOK.io
+
+Nothing too fancy here, you sign in with a web3 wallet (e.g. MetaMask) and they give you a URL to use.
+```
+    rpc:
+        url: "https://api.zmok.io/mainnet/${whatever}"
+```
+
+## More Configs
+
+I have another repo that contains various configs for various clients and providers:
+
+https://github.com/MysticRyuujin/dshackle-configs
 
 ## License
 
