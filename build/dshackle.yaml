@@ -41,6 +41,7 @@ cluster:
   upstreams:
     - id: fullnode
       chain: ethereum
+      role: primary
       options:
         disable-validation: false
       connection:
@@ -49,6 +50,36 @@ cluster:
             url: "http://fullnode.dappnode:8545"
           ws:
             url: "ws://fullnode.dappnode:8546"
+    
+    - id: infura
+      chain: ethereum
+      role: secondary
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://mainnet.infura.io/v3/${INFURA_KEY}"
+    
+    - id: rivet
+      chain: ethereum
+      role: secondary
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://${RIVET_KEY}.eth.rpc.rivet.cloud/"
+    
+    - id: alchemy
+      chain: ethereum
+      role: secondary
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}"
     
     - id: ankr
       chain: ethereum
@@ -69,33 +100,3 @@ cluster:
         ethereum:
           rpc:
             url: "https://cloudflare-eth.com"
-    
-    - id: infura
-      chain: ethereum
-      role: fallback
-      options:
-        disable-validation: true
-      connection:
-        ethereum:
-          rpc:
-            url: "https://mainnet.infura.io/v3/${INFURA_KEY}"
-    
-    - id: rivet
-      chain: ethereum
-      role: fallback
-      options:
-        disable-validation: true
-      connection:
-        ethereum:
-          rpc:
-            url: "https://${RIVET_KEY}.eth.rpc.rivet.cloud/"
-    
-    - id: alchemy
-      chain: ethereum
-      role: fallback
-      options:
-        disable-validation: true
-      connection:
-        ethereum:
-          rpc:
-            url: "https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}"
