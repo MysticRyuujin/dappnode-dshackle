@@ -12,13 +12,26 @@ It tries to recover from connection errors, faulty nodes, invalid responses, etc
 
 ## Setup
 
-By default this DAppNode package will try to connect to `http://fullnode.dappnode:8545` as well as endpoints from Infura, Rivet, and Alchemy. These providers all have some form of free tier that you can create an API key for and enter into the setup wizard (or place under the environment settings after startup). It also includes the publicly available Cloudflare endpoint `https://cloudflare-eth.com` AND the free public endpoint by Ankr `https://rpc.ankr.com/eth`
+By default this DAppNode package will try to connect to `http://geth.dappnode:8545` (you can change this in the setup wizard) as well as the following publicly available and free endpoints:
 
-All of the nodes except `fullnode.dappnode` are configured with the `role: fallback` setting to ensure that your DAppNode is preferred over any of the other endpoints.
+https://ethereumnodes.com/
 
-Because dshackle supports multiple chains, it requires a route to know which chain you are querying. By default only Ethereum chain is configured and it's configured at `/eth`
+| Provider | URL |
+| -------- | --- |
+| Ankr  |`https://rpc.ankr.com/eth` |
+| Blast | `https://eth-mainnet.public.blastapi.io` |
+| Cloudflare | `https://cloudflare-eth.com` |
+| Flux | `https://ethereumnodelight.app.runonflux.io` |
+| LinkPool | `https://main-rpc.linkpool.io/` |
+| MyCrypto | `https://api.mycryptoapi.com/eth` |
+| MyEtherWallet | `https://nodes.mewapi.io/rpc/eth` |
 
-e.g `http://dshackle.public.dappnode:8545/eth`
+
+All of the nodes except `geth.dappnode` are configured with the `role: fallback` setting to ensure that your DAppNode is preferred over any of the other endpoints.
+
+Because dshackle supports multiple chains, it requires a route to know which chain you are querying. By default only the Ethereum chain is configured and it's configured at `/eth`
+
+e.g `http://dshackle.public.dappnode:8545/eth` or `ws://dshackle.public.dappnode:8546/eth`
 
 ## Configuration
 
@@ -28,23 +41,64 @@ See official github repo documentation for how to configure `dshackle.yaml` - th
 
 You can modify the config to include new providers, or private endpoints, etc.
 
+### MERGE UPDATE
+
+There is now a `priority` field in the `/etcdshackle/dshackle.yaml` file under each provider. Obviously this is a subjective number that would only ever come into play if there was a fork. You may set whatever values you want here, but according to the Dshackle docs every endpoint must have a unique priority.
+
+The higher number is more trusted. My choices in the default configs do not reflect any logic or implied bias on my part, I just started at 100 for the local node and subtracted 10 per endpoint as I went down. Set whatever you want.
+
 ## WebSockets
 
 Some notes about WebSocket usage and Dshacke:
 
+Below are some of the issues I've seen with WebSockets:
+
 1. Some providers behave strangely when configured with WebSockets. Dshackle will throw odd errors, etc.
 2. Dshackle has issues with very large WebSocket responses (e.g. `debug_` methods) where it will just drop the reply.
 3. Dshackle will use WebSockets to subscribe to new headers/blocks. This consumes a decent number of "calls" to your "freemium" nodes.
+4. I recently noticed that the official DAppNode Geth client has WebSockets disabled (I don't know why).
 
-For the reasons above I only included a WebSocket config for the DAppNode's `fullnode` endpoint.
+WebSockets are a pain in the ass, sorry but they just are. However, since Dshackle has put a lot of effort into supporting them and making them better, I've included support for it in the new release (`v0.3.0`)
 
-If you don't care about the extra calls, and/or you're not doing any large `debug_` calls to your nodes, you can add WebSocket URLs for the endpoints that support it (e.g. Infura). However, your mileage may vary, I get weird errors with Alchemy for instance.
+If you want to enable WebSockets on the default Geth installation you have to add this to the extra options in the Geth package:
+```
+--ws --ws.addr 0.0.0.0 --ws.port 8546 --ws.origins="*" --ws.api eth,net,web3,txpool
+```
+
+You can adjust the `--ws.api` as needed obviously. Also, by default methods like `eth_newFilter` are not enabled by Dshackle, so you'd need to enable them on a supported upstream provider (such as your local node).
+
+Look, it's all configurable... so you do you, but I'm warning you... WebSockets suck.
+
+Adding/Removing WebSocket connections to endpoints is as simple as:
+```
+    rpc:
+        url: "http://geth.dappnode:8545"
+    ws:
+        url: "ws://geth.dappnode:8546"
+```
+
+Adding/Removing methods is in the [docs](https://github.com/emeraldpay/dshackle/blob/master/docs/04-upstream-config.adoc) but it looks like this:
+```
+    methods:
+      enabled:
+        - name: eth_newFilter
+      disabled:
+        - name: eth_sendRawTransaction
+```
 
 ## TLS/SSL
 
 Dshackle does support TLS/SSL encryption, you can upload certs into the `/etc/dshackle` folder if you want to use it, though it might be easier to just expose Dsahckle through the DAppNode's HTTPS tool.
 
 For more info on how to use/setup TLS for Dshackle see the official repo docs.
+
+## Metrics
+
+Prometheus metrics are enabled in the default config at `:8081/metrics`
+
+## Health Check
+
+A health check is provided at `:8082/health` and will return HTTP 200 if at least 1 Ethereum endpoint is working.
 
 ## Flashbots!
 
@@ -65,8 +119,20 @@ A cool trick you can do to submit transactions through [Flashbots](https://docs.
 
 Now Dshackle has no choice but to route all of your transactions through the only available upstream for that method, the Flashbots RPC endpoint.
 
+**WARNING: FLASHBOTS MAY OR MAY NOT CENSOR TRANSACTIONS, SEE: TWITTER DRAMA OVER TORNADO CASH**
+
 ## Other Providers
-Below is a list of "other" providers I know of that you can also add to your config. I didn't include them because I don't have a ton of experience using them and I figured setting up three was already enough.
+Below is a list of other providers I know of that you can also add to your config by editing your `/etc/dshackle/dshackle.yaml` file.
+
+Also check out https://ethereumnodes.com/ to find more Freemium or Paid providers!
+
+### QuickNode
+
+QuickNode now has a free tier! Using QuickNode is as simple as signing up and creating an endpoint and adding it like this:
+```
+    rpc:
+        url: "https://${name-name-name}.quiknode.pro/${token}/
+```
 
 ### Chainstack
 
@@ -86,16 +152,8 @@ Pocket network is another provider with a free tier that gives you the option to
     rpc:
         url: "https://eth-mainnet.gateway.pokt.network/v1/lb/${whatever}"
         basic-auth:
-        username: ""
-        password: ${SecretKey}
-```
-
-### ZMOK.io
-
-Nothing too fancy here, you sign in with a web3 wallet (e.g. MetaMask) and they give you a URL to use.
-```
-    rpc:
-        url: "https://api.zmok.io/mainnet/${whatever}"
+            username: ""
+            password: ${SecretKey}
 ```
 
 ## More Configs
@@ -103,6 +161,8 @@ Nothing too fancy here, you sign in with a web3 wallet (e.g. MetaMask) and they 
 I have another repo that contains various configs for various clients and providers:
 
 https://github.com/MysticRyuujin/dshackle-configs
+
+Be warned, I don't update it very often, it could be outdated. Use with caution.
 
 ## License
 

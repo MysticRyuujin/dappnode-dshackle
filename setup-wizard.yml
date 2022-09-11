@@ -1,32 +1,10 @@
 version: "2"
 fields:
-  - id: INFURA_KEY
+  - id: LOCALNODE_HTTP
     target:
       type: environment
-      name: INFURA_KEY
+      name: LOCALNODE_HTTP
       service: dshackle
-    title: Infura Project ID
+    title: Local Node URL (HTTP)
     description: >-
-      Key from mainnet.infura.io/v3/${INFURA_KEY}
-    secret: false
-    required: false
-  - id: RIVET_KEY
-    target:
-      type: environment
-      name: RIVET_KEY
-      service: dshackle
-    title: Rivet Key
-    description: >-
-      Key from ${RIVET_KEY}.eth.rpc.rivet.cloud
-    secret: false
-    required: false
-  - id: ALCHEMY_KEY
-    target:
-      type: environment
-      name: ALCHEMY_KEY
-      service: dshackle
-    title: Alchemy Key
-    description: >-
-      Key from eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}
-    secret: false
-    required: false
+      Usually this is one of http://geth.dappnode:8545 or http://nethermind.dappnode:8545 or http://erigon.dappnode:8545

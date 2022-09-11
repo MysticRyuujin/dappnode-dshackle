@@ -5,10 +5,17 @@ tls:
   enabled: false
 
 monitoring:
-  enabled: false
+  enabled: true
+  jvm: false
+  extended: false
+  prometheus:
+    enabled: true
+    bind: 0.0.0.0
+    port: 8081
+    path: /metrics
 
 health:
-  port: 8081
+  port: 8082
   host: 0.0.0.0
   path: /health
   blockchains:
@@ -19,10 +26,13 @@ cache:
   redis:
     enabled: false
 
+signed-response:
+  enabled: false
+
 proxy:
   host: 0.0.0.0
   port: 8545
-  websocket: false
+  websocket: true
   tls:
     enabled: false
   routes:
@@ -39,51 +49,21 @@ cluster:
       options:
         min-peers: 10
   upstreams:
-    - id: fullnode
+    - id: localnode
       chain: ethereum
       role: primary
+      priority: 100
       options:
         disable-validation: false
       connection:
         ethereum:
           rpc:
-            url: "http://fullnode.dappnode:8545"
-          ws:
-            url: "ws://fullnode.dappnode:8546"
-    
-    - id: infura
-      chain: ethereum
-      role: secondary
-      options:
-        disable-validation: true
-      connection:
-        ethereum:
-          rpc:
-            url: "https://mainnet.infura.io/v3/${INFURA_KEY}"
-    
-    - id: rivet
-      chain: ethereum
-      role: secondary
-      options:
-        disable-validation: true
-      connection:
-        ethereum:
-          rpc:
-            url: "https://${RIVET_KEY}.eth.rpc.rivet.cloud/"
-    
-    - id: alchemy
-      chain: ethereum
-      role: secondary
-      options:
-        disable-validation: true
-      connection:
-        ethereum:
-          rpc:
-            url: "https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}"
+            url: "${LOCALNODE_HTTP}"
     
     - id: ankr
       chain: ethereum
       role: fallback
+      priority: 90
       options:
         disable-validation: true
       connection:
@@ -91,12 +71,68 @@ cluster:
           rpc:
             url: "https://rpc.ankr.com/eth"
     
+    - id: blast
+      chain: ethereum
+      role: fallback
+      priority: 80
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://eth-mainnet.public.blastapi.io"
+    
     - id: cloudflare
       chain: ethereum
       role: fallback
+      priority: 70
       options:
         disable-validation: true
       connection:
         ethereum:
           rpc:
             url: "https://cloudflare-eth.com"
+    
+    - id: flux
+      chain: ethereum
+      role: fallback
+      priority: 60
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://ethereumnodelight.app.runonflux.io"
+    
+    - id: linkpool
+      chain: ethereum
+      role: fallback
+      priority: 50
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://main-rpc.linkpool.io"
+    
+    - id: mycrypto
+      chain: ethereum
+      role: fallback
+      priority: 40
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://api.mycryptoapi.com/eth"
+    
+    - id: myetherwallet
+      chain: ethereum
+      role: fallback
+      priority: 30
+      options:
+        disable-validation: true
+      connection:
+        ethereum:
+          rpc:
+            url: "https://nodes.mewapi.io/rpc/eth"
