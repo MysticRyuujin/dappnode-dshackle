@@ -1,11 +1,11 @@
 version: "3.4"
 services:
   dshackle:
-    image: "dshackle.dshackle.public.dappnode.eth:0.3.0"
+    image: "dshackle.dshackle.public.dappnode.eth:0.3.1"
     build:
       context: build
       args:
-        UPSTREAM_VERSION: 0.13.0
+        UPSTREAM_VERSION: 0.13.1
     volumes:
       - "dshackle:/etc/dshackle"
     environment:

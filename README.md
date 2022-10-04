@@ -16,13 +16,13 @@ By default this DAppNode package will try to connect to `http://geth.dappnode:85
 
 https://ethereumnodes.com/
 
-| Provider | URL |
-| -------- | --- |
+| Provider | URL | NOTES |
+| -------- | --- | ----- |
 | Ankr  |`https://rpc.ankr.com/eth` |
 | Blast | `https://eth-mainnet.public.blastapi.io` |
 | Cloudflare | `https://cloudflare-eth.com` |
-| Flux | `https://ethereumnodelight.app.runonflux.io` |
-| LinkPool | `https://main-rpc.linkpool.io/` |
+| Flux | `https://ethereumnodelight.app.runonflux.io` | Blocking |
+| Linkpool | `https://main-rpc.linkpool.io/` | Down |
 | MyCrypto | `https://api.mycryptoapi.com/eth` |
 | MyEtherWallet | `https://nodes.mewapi.io/rpc/eth` |
 

@@ -1,3 +1,10 @@
+[0.3.1]
+* Dshackle Version 0.13.1
+* Fixes upstream validation checks
+* Fix crash on install with new DAppNode Manager
+* Removed Linkpool (405 errors)
+* Remove Flux (Requests are blocked)
+
 [0.3.0]
 * MERGE READY!
 * Dshackle Version 0.13.0
