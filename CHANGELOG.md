@@ -1,4 +1,16 @@
+# CHANGELOG
+
+[0.4.0]
+
+* Added support for Polygon
+* Removed MyCrypto (Forbidden)
+* Added 1inch
+* Added LlamaNodes
+* Added Pokt
+* Added PublicNode
+
 [0.3.1]
+
 * Dshackle Version 0.13.1
 * Fixes upstream validation checks
 * Fix crash on install with new DAppNode Manager
@@ -6,6 +18,7 @@
 * Remove Flux (Requests are blocked)
 
 [0.3.0]
+
 * MERGE READY!
 * Dshackle Version 0.13.0
 * Made local node configurable (Issue #1)
@@ -16,6 +29,7 @@
 * Updated README
 
 [0.2.0]
+
 * Dshackle Version 0.12.0
 * Added ankr
 * Updated README

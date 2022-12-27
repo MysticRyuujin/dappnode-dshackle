@@ -14,24 +14,38 @@ It tries to recover from connection errors, faulty nodes, invalid responses, etc
 
 By default this DAppNode package will try to connect to `http://geth.dappnode:8545` (you can change this in the setup wizard) as well as the following publicly available and free endpoints:
 
-https://ethereumnodes.com/
+[EthereumNodes](https://ethereumnodes.com/) and [ChainList.org](https://chainlist.org)
 
-| Provider | URL | NOTES |
-| -------- | --- | ----- |
-| Ankr  |`https://rpc.ankr.com/eth` |
-| Blast | `https://eth-mainnet.public.blastapi.io` |
-| Cloudflare | `https://cloudflare-eth.com` |
-| Flux | `https://ethereumnodelight.app.runonflux.io` | Blocking |
-| Linkpool | `https://main-rpc.linkpool.io/` | Down |
-| MyCrypto | `https://api.mycryptoapi.com/eth` |
-| MyEtherWallet | `https://nodes.mewapi.io/rpc/eth` |
+| Provider | URL | NETWORK | NOTES |
+| -------- | --- | ------- | ----- |
+| 1inch | `https://1rpc.io/eth` | Ethereum |
+| 1inch | `https://1rpc.io/matic` | Polygon |
+| Ankr  |`https://rpc.ankr.com/eth` | Ethereum |
+| Ankr  |`https://rpc.ankr.com/polygon` | Polygon |
+| Blast | `https://eth-mainnet.public.blastapi.io` | Ethereum |
+| Blast | `https://polygon-mainnet.public.blastapi.io` | Polygon |
+| Cloudflare | `https://cloudflare-eth.com` | Ethereum |
+| LlamaNodes | `https://eth.llamarpc.com` | Ethereum |
+| LlamaNodes | `https://polygon.llamarpc.com` | Polygon |
+| MyEtherWallet | `https://nodes.mewapi.io/rpc/eth` | Ethereum |
+| Pokt | `https://eth-rpc.gateway.pokt.network` | Ethereum |
+| Pokt | `https://poly-rpc.gateway.pokt.network` | Polygon |
+| Polygon-RPC | `https://polygon-rpc.com` | Polygon |
+| PublicNode | `https://ethereum.publicnode.com` | Ethereum |
+| PublicNode | `https://polygon-bor.publicnode.com` | Polygon |
+| QuickNode | `https://rpc-mainnet.matic.quiknode.pro` | Polygon |
+| Unifra | `https://eth-mainnet-public.unifra.io` | Ethereum |
+| Unifra | `https://polygon-mainnet-public.unifra.io` | Polygon |
 
+All of the nodes except the local node (e.g. `geth.dappnode`) are configured with the `role: fallback` setting to ensure that your DAppNode is preferred over any of the other endpoints. Since there is no default endpoint for Polygon, and they are all fallback, it make no difference on Polygon. However, you can certainly add your own `role: primary` endpoint if you are running a local node! Additionally, if you sign up for any Premium or Paid endpoints, you can configure those with `role: secondary` so they're preferred over the free public fallback nodes!
 
-All of the nodes except `geth.dappnode` are configured with the `role: fallback` setting to ensure that your DAppNode is preferred over any of the other endpoints.
+Because Dshackle supports multiple chains, it requires a route to know which chain you are querying. By default the Ethereum chain is configured at `/eth` and Matic/Polygon is configured at `/polygon`
 
-Because dshackle supports multiple chains, it requires a route to know which chain you are querying. By default only the Ethereum chain is configured and it's configured at `/eth`
+e.g `http://dshackle.public.dappnode:8545/eth` or `ws://dshackle.public.dappnode:8546/polygon`
 
-e.g `http://dshackle.public.dappnode:8545/eth` or `ws://dshackle.public.dappnode:8546/eth`
+## Privacy Considerations
+
+Take a look at [ChainList.org](https://chainlist.org) - You may want to add or remove nodes from the default list if you're worried about the privacy policy of various providers, if you're into that kind of thing.
 
 ## Configuration
 
@@ -47,9 +61,11 @@ There is now a `priority` field in the `/etcdshackle/dshackle.yaml` file under e
 
 The higher number is more trusted. My choices in the default configs do not reflect any logic or implied bias on my part, I just started at 100 for the local node and subtracted 10 per endpoint as I went down. Set whatever you want.
 
+This setting does not apply to Polygon endpoints.
+
 ## WebSockets
 
-Some notes about WebSocket usage and Dshacke:
+Some notes about WebSocket usage and Dshackle:
 
 Below are some of the issues I've seen with WebSockets:
 
@@ -61,7 +77,8 @@ Below are some of the issues I've seen with WebSockets:
 WebSockets are a pain in the ass, sorry but they just are. However, since Dshackle has put a lot of effort into supporting them and making them better, I've included support for it in the new release (`v0.3.0`)
 
 If you want to enable WebSockets on the default Geth installation you have to add this to the extra options in the Geth package:
-```
+
+```bash
 --ws --ws.addr 0.0.0.0 --ws.port 8546 --ws.origins="*" --ws.api eth,net,web3,txpool
 ```
 
@@ -70,7 +87,8 @@ You can adjust the `--ws.api` as needed obviously. Also, by default methods like
 Look, it's all configurable... so you do you, but I'm warning you... WebSockets suck.
 
 Adding/Removing WebSocket connections to endpoints is as simple as:
-```
+
+```yaml
     rpc:
         url: "http://geth.dappnode:8545"
     ws:
@@ -78,7 +96,8 @@ Adding/Removing WebSocket connections to endpoints is as simple as:
 ```
 
 Adding/Removing methods is in the [docs](https://github.com/emeraldpay/dshackle/blob/master/docs/04-upstream-config.adoc) but it looks like this:
-```
+
+```yaml
     methods:
       enabled:
         - name: eth_newFilter
@@ -98,38 +117,44 @@ Prometheus metrics are enabled in the default config at `:8081/metrics`
 
 ## Health Check
 
-A health check is provided at `:8082/health` and will return HTTP 200 if at least 1 Ethereum endpoint is working.
+A health check is provided at `:8082/health` and will return HTTP 200 if at least 1 Ethereum endpoint and 1 Polygon endpoint is working.
 
-## Flashbots!
+See [Health Checks](https://github.com/emeraldpay/dshackle/blob/master/docs/06-monitoring.adoc#health-checks) for more info.
+
+## Flashbots
+
+WARNING: **FLASHBOTS MAY OR MAY NOT CENSOR TRANSACTIONS, SEE: TWITTER DRAMA OVER TORNADO CASH**
 
 A cool trick you can do to submit transactions through [Flashbots](https://docs.flashbots.net/flashbots-protect/rpc/quick-start/)
 
 1. Add Flashbots RPC
-```
-    rpc:
-        url: "https://rpc.flashbots.net"
-```
+
+    ```yaml
+        rpc:
+            url: "https://rpc.flashbots.net"
+    ```
+
 2. Disable `eth_sendRawTransaction` on all configured endpoints EXCEPT for the Flashbots RPC endpoint:
 
-```
-    methods:
-      disabled:
-        - name: eth_sendRawTransaction
-```
+    ```yaml
+        methods:
+        disabled:
+            - name: eth_sendRawTransaction
+    ```
 
 Now Dshackle has no choice but to route all of your transactions through the only available upstream for that method, the Flashbots RPC endpoint.
 
-**WARNING: FLASHBOTS MAY OR MAY NOT CENSOR TRANSACTIONS, SEE: TWITTER DRAMA OVER TORNADO CASH**
-
 ## Other Providers
+
 Below is a list of other providers I know of that you can also add to your config by editing your `/etc/dshackle/dshackle.yaml` file.
 
-Also check out https://ethereumnodes.com/ to find more Freemium or Paid providers!
+Also check out [ChainList.org](https://chainlist.org) or [EthereumNodes](https://ethereumnodes.com/) to find more Freemium or Paid providers!
 
 ### QuickNode
 
 QuickNode now has a free tier! Using QuickNode is as simple as signing up and creating an endpoint and adding it like this:
-```
+
+```yaml
     rpc:
         url: "https://${name-name-name}.quiknode.pro/${token}/
 ```
@@ -137,7 +162,8 @@ QuickNode now has a free tier! Using QuickNode is as simple as signing up and cr
 ### Chainstack
 
 Chainstack is another provider with a free tier. If you want to use Chainstack you need to send basic auth, here's an example:
-```
+
+```yaml
     rpc:
         url: "https://${whatever}.p2pify.com"
         basic-auth:
@@ -145,10 +171,11 @@ Chainstack is another provider with a free tier. If you want to use Chainstack y
             password: there-can-be-only-one
 ```
 
-### Pocket Network
+### Pocket Network (POKT)
 
-Pocket network is another provider with a free tier that gives you the option to use a "Secret Key" which according to their docs is just an HTTP basic-auth password, without a username. You don't have to enable it, but it's recommended. I haven't actually tested this but theoretically this would work:
-```
+Pocket Network (a.k.a POKT) is another provider with a free tier that gives you the option to use a "Secret Key" which according to their docs is just an HTTP basic-auth password, without a username. You don't have to enable it, but it's recommended. I haven't actually tested this but theoretically this would work:
+
+```yaml
     rpc:
         url: "https://eth-mainnet.gateway.pokt.network/v1/lb/${whatever}"
         basic-auth:
@@ -160,7 +187,7 @@ Pocket network is another provider with a free tier that gives you the option to
 
 I have another repo that contains various configs for various clients and providers:
 
-https://github.com/MysticRyuujin/dshackle-configs
+[CONFIGS](https://github.com/MysticRyuujin/dshackle-configs)
 
 Be warned, I don't update it very often, it could be outdated. Use with caution.
 
@@ -168,6 +195,6 @@ Be warned, I don't update it very often, it could be outdated. Use with caution.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+[LICENSE](http://www.apache.org/licenses/LICENSE-2.0)
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.

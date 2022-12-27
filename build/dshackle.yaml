@@ -21,6 +21,8 @@ health:
   blockchains:
     - chain: ethereum
       min-available: 1
+    - chain: polygon
+      min-available: 1
 
 cache:
   redis:
@@ -41,13 +43,16 @@ proxy:
   routes:
     - id: eth
       blockchain: ethereum
+    - id: polygon
+      blockchain: polygon
 
 cluster:
   defaults:
     - chains:
         - ethereum
+        - polygon
   upstreams:
-    - id: localnode
+    - id: eth-localnode
       chain: ethereum
       role: primary
       priority: 100
@@ -62,7 +67,7 @@ cluster:
           rpc:
             url: "${LOCALNODE_HTTP}"
     
-    - id: ankr
+    - id: eth-1inch
       chain: ethereum
       role: fallback
       priority: 90
@@ -74,9 +79,9 @@ cluster:
       connection:
         ethereum:
           rpc:
-            url: "https://rpc.ankr.com/eth"
+            url: "https://1rpc.io/eth"
     
-    - id: blast
+    - id: eth-ankr
       chain: ethereum
       role: fallback
       priority: 80
@@ -88,9 +93,9 @@ cluster:
       connection:
         ethereum:
           rpc:
-            url: "https://eth-mainnet.public.blastapi.io"
+            url: "https://rpc.ankr.com/eth"
     
-    - id: cloudflare
+    - id: eth-blast
       chain: ethereum
       role: fallback
       priority: 70
@@ -102,9 +107,38 @@ cluster:
       connection:
         ethereum:
           rpc:
-            url: "https://cloudflare-eth.com"
+            url: "https://eth-mainnet.public.blastapi.io"
     
-    - id: mycrypto
+    - id: eth-cloudflare
+      chain: ethereum
+      role: fallback
+      priority: 60
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://cloudflare-eth.com"
+
+    - id: eth-llamanodes
+      chain: ethereum
+      role: fallback
+      priority: 50
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://eth.llamarpc.com"
+
+    
+    - id: eth-myetherwallet
       chain: ethereum
       role: fallback
       priority: 40
@@ -116,9 +150,9 @@ cluster:
       connection:
         ethereum:
           rpc:
-            url: "https://api.mycryptoapi.com/eth"
-    
-    - id: myetherwallet
+            url: "https://nodes.mewapi.io/rpc/eth"
+
+    - id: eth-pokt
       chain: ethereum
       role: fallback
       priority: 30
@@ -130,4 +164,150 @@ cluster:
       connection:
         ethereum:
           rpc:
-            url: "https://nodes.mewapi.io/rpc/eth"
+            url: "https://eth-rpc.gateway.pokt.network"
+    
+    - id: eth-publicnode
+      chain: ethereum
+      role: fallback
+      priority: 20
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://ethereum.publicnode.com"
+    
+    - id: eth-unifra
+      chain: ethereum
+      role: fallback
+      priority: 10
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://eth-mainnet-public.unifra.io"
+
+    - id: polygon-1inch
+      chain: polygon
+      role: fallback
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://1rpc.io/matic"
+
+    - id: polygon-ankr
+      chain: polygon
+      role: fallback
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://rpc.ankr.com/polygon"
+
+    - id: polygon-blast
+      chain: polygon
+      role: fallback
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://polygon-mainnet.public.blastapi.io"
+
+    - id: polygon-llamanodes
+      chain: polygon
+      role: fallback
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://polygon.llamarpc.com"
+
+    - id: polygon-pokt
+      chain: polygon
+      role: fallback
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://poly-rpc.gateway.pokt.network"
+
+    - id: polygon-rpc
+      chain: polygon
+      role: fallback
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://polygon-rpc.com"
+    
+    - id: polygon-publicnode
+      chain: polygon
+      role: fallback
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://polygon-bor.publicnode.com"
+
+    - id: polygon-quicknode
+      chain: polygon
+      role: fallback
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://rpc-mainnet.matic.quiknode.pro"
+
+
+    - id: polygon-unifra
+      chain: polygon
+      role: fallback
+      options:
+        disable-validation: false
+        validate-peers: false
+        validate-syncing: true
+        timeout: 30
+      connection:
+        ethereum:
+          rpc:
+            url: "https://polygon-mainnet-public.unifra.io"
