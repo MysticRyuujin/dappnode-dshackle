@@ -18,8 +18,8 @@ By default this DAppNode package will try to connect to `http://geth.dappnode:85
 
 | Provider | URL | NETWORK | NOTES |
 | -------- | --- | ------- | ----- |
-| 1inch | `https://1rpc.io/eth` | Ethereum |
-| 1inch | `https://1rpc.io/matic` | Polygon |
+| 1rpc | `https://1rpc.io/eth` | Ethereum |
+| 1rpc | `https://1rpc.io/matic` | Polygon |
 | Ankr  |`https://rpc.ankr.com/eth` | Ethereum |
 | Ankr  |`https://rpc.ankr.com/polygon` | Polygon |
 | Blast | `https://eth-mainnet.public.blastapi.io` | Ethereum |
