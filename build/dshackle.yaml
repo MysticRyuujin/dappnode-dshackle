@@ -67,7 +67,7 @@ cluster:
           rpc:
             url: "${LOCALNODE_HTTP}"
     
-    - id: eth-1inch
+    - id: eth-1rpc
       chain: ethereum
       role: fallback
       priority: 90
@@ -194,7 +194,7 @@ cluster:
           rpc:
             url: "https://eth-mainnet-public.unifra.io"
 
-    - id: polygon-1inch
+    - id: polygon-1rpc
       chain: polygon
       role: fallback
       options:
