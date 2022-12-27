@@ -7,4 +7,4 @@ fields:
       service: dshackle
     title: Local Node URL (HTTP)
     description: >-
-      Usually this is one of http://geth.dappnode:8545 or http://nethermind.dappnode:8545 or http://erigon.dappnode:8545
+      Usually this is one of http://geth.dappnode:8545 or http://nethermind.dappnode:8545 or http://erigon.dappnode:8545 or http://besu.public.dappnode:8545

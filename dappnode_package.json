@@ -1,6 +1,6 @@
 {
   "name": "dshackle.public.dappnode.eth",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "upstreamVersion": "v0.13.1",
   "upstreamRepo": "emeraldpay/dshackle",
   "shortDescription": "Emerald Dshackle - Fault Tolerant RPC Load Balancer",
@@ -19,8 +19,8 @@
   "author": "MysticRyuujin <MysticRyuujin@gmail.com> (https://github.com/MysticRyuujin)",
   "contributors": [],
   "categories": ["Developer tools", "Communications"],
-  "keywords": ["rpc", "dshackle"],
-  "globalEnvs": {},
+  "keywords": ["rpc", "dshackle", "ethereum", "polygon"],
+  "globalEnvs": [],
   "backup": [],
   "repository": {
     "type": "git",
@@ -31,7 +31,8 @@
   },
   "links": {
     "homepage": "https://github.com/emeraldpay/dshackle",
-    "gateway": "http://dshackle.public.dappnode:8545/eth",
+    "ethereum": "http://dshackle.public.dappnode:8545/eth",
+    "polygon": "http://dshackle.public.dappnode:8545/polygon",
     "metrics": "http://dshackle.public.dappnode:8081/metrics",
     "health": "http://dshackle.public.dappnode:8082/health",
     "readme": "https://github.com/MysticRyuujin/dappnode-dshackle/blob/main/README.md"
