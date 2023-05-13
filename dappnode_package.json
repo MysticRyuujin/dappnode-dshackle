@@ -1,7 +1,7 @@
 {
   "name": "dshackle.public.dappnode.eth",
-  "version": "0.4.0",
-  "upstreamVersion": "v0.13.1",
+  "version": "0.5.0",
+  "upstreamVersion": "v0.14.0",
   "upstreamRepo": "emeraldpay/dshackle",
   "shortDescription": "Emerald Dshackle - Fault Tolerant RPC Load Balancer",
   "description": "Emerald Dshackle is a Fault Tolerant Load Balancer for Blockchain APIs",

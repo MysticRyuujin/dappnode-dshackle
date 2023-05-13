@@ -1,5 +1,9 @@
 # CHANGELOG
 
+[0.5.0]
+
+* Dshackle Version 0.14.0
+
 [0.4.0]
 
 * Added support for Polygon
@@ -36,4 +40,5 @@
 * Update configs
 
 [0.1.0]
+
 Initial Release
