@@ -66,7 +66,7 @@ cluster:
         ethereum:
           rpc:
             url: "${LOCALNODE_HTTP}"
-    
+
     - id: eth-1rpc
       chain: ethereum
       role: fallback
@@ -80,7 +80,7 @@ cluster:
         ethereum:
           rpc:
             url: "https://1rpc.io/eth"
-    
+
     - id: eth-ankr
       chain: ethereum
       role: fallback
@@ -94,7 +94,7 @@ cluster:
         ethereum:
           rpc:
             url: "https://rpc.ankr.com/eth"
-    
+
     - id: eth-blast
       chain: ethereum
       role: fallback
@@ -108,7 +108,7 @@ cluster:
         ethereum:
           rpc:
             url: "https://eth-mainnet.public.blastapi.io"
-    
+
     - id: eth-cloudflare
       chain: ethereum
       role: fallback
@@ -137,7 +137,6 @@ cluster:
           rpc:
             url: "https://eth.llamarpc.com"
 
-    
     - id: eth-myetherwallet
       chain: ethereum
       role: fallback
@@ -165,7 +164,7 @@ cluster:
         ethereum:
           rpc:
             url: "https://eth-rpc.gateway.pokt.network"
-    
+
     - id: eth-publicnode
       chain: ethereum
       role: fallback
@@ -179,8 +178,8 @@ cluster:
         ethereum:
           rpc:
             url: "https://ethereum.publicnode.com"
-    
-    - id: eth-unifra
+
+    - id: eth-drpc
       chain: ethereum
       role: fallback
       priority: 10
@@ -192,7 +191,7 @@ cluster:
       connection:
         ethereum:
           rpc:
-            url: "https://eth-mainnet-public.unifra.io"
+            url: "https://eth.drpc.org"
 
     - id: polygon-1rpc
       chain: polygon
@@ -271,7 +270,7 @@ cluster:
         ethereum:
           rpc:
             url: "https://polygon-rpc.com"
-    
+
     - id: polygon-publicnode
       chain: polygon
       role: fallback
@@ -298,8 +297,7 @@ cluster:
           rpc:
             url: "https://rpc-mainnet.matic.quiknode.pro"
 
-
-    - id: polygon-unifra
+    - id: polygon-drpc
       chain: polygon
       role: fallback
       options:
@@ -310,4 +308,4 @@ cluster:
       connection:
         ethereum:
           rpc:
-            url: "https://polygon-mainnet-public.unifra.io"
+            url: "https://polygon.drpc.org"

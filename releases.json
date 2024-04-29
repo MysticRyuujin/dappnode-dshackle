@@ -40,5 +40,12 @@
       "http://localhost:5001": "Sat, 13 May 2023 13:57:21 GMT"
     },
     "link": "https://dappnode.github.io/sdk-publish/?r=dshackle.public.dappnode.eth&v=0.5.0&h=%2Fipfs%2FQmPTcoURQ9EeF7GoobwCpBoTPdUZUMspG13riZwHCDr64v"
+  },
+  "0.6.0": {
+    "hash": "/ipfs/QmeHzmRX4k3H8bPuzvZLW56xGULbvhjz14M36Wmo1KZ3Nn",
+    "uploadedTo": {
+      "http://ipfs02.wright.network:5001": "Mon, 29 Apr 2024 00:48:54 GMT"
+    },
+    "link": "https://dappnode.github.io/sdk-publish/?r=dshackle.public.dappnode.eth&v=0.6.0&h=%2Fipfs%2FQmeHzmRX4k3H8bPuzvZLW56xGULbvhjz14M36Wmo1KZ3Nn"
   }
 }

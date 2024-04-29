@@ -1,5 +1,10 @@
 # CHANGELOG
 
+[0.6.0]
+
+* Dshackle Version 0.15.1
+* Replaced Uninfra with dRPC
+
 [0.5.0]
 
 * Dshackle Version 0.14.0
