@@ -25,6 +25,8 @@ By default this DAppNode package will try to connect to `http://geth.dappnode:85
 | Blast | `https://eth-mainnet.public.blastapi.io` | Ethereum |
 | Blast | `https://polygon-mainnet.public.blastapi.io` | Polygon |
 | Cloudflare | `https://cloudflare-eth.com` | Ethereum |
+| dRPC | `https://eth.drpc.org` | Ethereum |
+| dRPC | `https://eth.drpc.org` | Polygon |
 | LlamaNodes | `https://eth.llamarpc.com` | Ethereum |
 | LlamaNodes | `https://polygon.llamarpc.com` | Polygon |
 | MyEtherWallet | `https://nodes.mewapi.io/rpc/eth` | Ethereum |
@@ -34,8 +36,6 @@ By default this DAppNode package will try to connect to `http://geth.dappnode:85
 | PublicNode | `https://ethereum.publicnode.com` | Ethereum |
 | PublicNode | `https://polygon-bor.publicnode.com` | Polygon |
 | QuickNode | `https://rpc-mainnet.matic.quiknode.pro` | Polygon |
-| Unifra | `https://eth-mainnet-public.unifra.io` | Ethereum |
-| Unifra | `https://polygon-mainnet-public.unifra.io` | Polygon |
 
 All of the nodes except the local node (e.g. `geth.dappnode`) are configured with the `role: fallback` setting to ensure that your DAppNode is preferred over any of the other endpoints. Since there is no default endpoint for Polygon, and they are all fallback, it make no difference on Polygon. However, you can certainly add your own `role: primary` endpoint if you are running a local node! Additionally, if you sign up for any Premium or Paid endpoints, you can configure those with `role: secondary` so they're preferred over the free public fallback nodes!
 
